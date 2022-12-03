@@ -16,14 +16,12 @@ function verifyLogin(e, form) {
   query = "?email=" + form.floatingInput.value 
   + "&pass=" + form.floatingPassword.value ;
   alert(query);
-  fetch("api/accounts", {
-    method: 'get',
-    body: JSON.stringify({ email: form.floatingInput.value, pass: form.floatingPassword.value })
-  }).then((res) => res.json()).then((json) => {
+  fetch("api/accounts" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
     alert('form submit!');
     alert(json);
   }).catch((err) => {
-    alert('Error');
+    alert('Error')
+    alert(err);
   });
 }
 
