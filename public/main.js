@@ -35,7 +35,22 @@ function verifyLogin(e, form) {
 
 function verifyNewAccount(e, form) {
   e.preventDefault();
-  
+  info = {
+    "uname": form.floatingUsername.value,
+    "email": form.floatingEmail.value,
+    "fname": form.floatingFirstName.value,
+    "lname": form.floatingLastName.value,
+    "pass": form.floatingPassword.value,
+    "phone": form.floatingTelephone.value,
+    "favs": {}
+  }
+  fetch("api/signup", {method: 'post'}).then((res) => {
+    alert(response);
+  }).catch((err) => {
+    alert('Error')
+    alert(err);
+    document.getElementById("fail").innerHTML = "Error";
+  });
 }
 
 /*function verifyNewAccount() {
