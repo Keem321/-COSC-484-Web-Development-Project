@@ -53,3 +53,33 @@ function verifyPassword() {
     }
     return true;
 }
+
+/* Create a post
+-  takes a form from home page and creates an entry in the database, returns the new post
+*/
+function createPost(e, formPost){
+  e.preventDefault();
+  //query formPost values replaced by id or for element in home page
+  query = "?title" + formPost.value
+  + "&desc" + formPost.value
+  + "&imageUrl" + formPost.value
+  + "&category" + formPost.value;
+  fetch("api/posts" + query, {method: 'post'}).then((res) => res.json()).then((json) => {
+    alert(json);
+  }).catch((err) => {
+    alert(err);
+  });
+}
+
+/* Shows all posts under a selected category selected by user
+*/
+function showPost(e, getPosts){
+  e.preventDefault();
+  // getPost.value to be replaced by id or element in home.html
+  query = "?category" + getPosts.value;
+  fetch("api/post" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
+    alert(json);
+  }).catch((err) => {
+    alert(err);
+  });
+}
