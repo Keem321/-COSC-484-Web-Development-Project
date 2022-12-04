@@ -10,7 +10,7 @@ function run() {
     });
 }
 
-/* Verify all requirements met */
+/* Verify all requirements met !! add password check??*/
 function verifyLogin(e, form) {
   e.preventDefault();
   query = "?email=" + form.floatingInput.value 
@@ -19,15 +19,28 @@ function verifyLogin(e, form) {
   fetch("api/accounts" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
     alert('form submit!');
     alert(json);
+    if(json != null) {
+      window.location.href = 'index.html';
+      //document.cookie = "email=John Doe";
+     // document.cookie = "loggedIn=true; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    } else {
+      document.getElementById("fail").innerHTML = "Incorrect Email or Password";
+    }
   }).catch((err) => {
     alert('Error')
     alert(err);
+    document.getElementById("fail").innerHTML = "Error";
   });
 }
 
-function verifyNewAccount() {
-  return verifyUsername() && verifyPassword()
+function verifyNewAccount(e, form) {
+  e.preventDefault();
+  
 }
+
+/*function verifyNewAccount() {
+  return verifyUsername() && verifyPassword()
+}*/
 
 /* Verify Username Length
    - Length L must satisfy 5 < L < 24 */
