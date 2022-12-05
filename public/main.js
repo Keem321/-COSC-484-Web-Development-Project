@@ -15,6 +15,7 @@ function verifyLogin(e, form) {
   e.preventDefault();
   query = "?email=" + form.floatingInput.value 
   + "&pass=" + form.floatingPassword.value ;
+  alert(form.floatingInput.value);
   alert(query);
   fetch("api/accounts" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
     alert('form submit!');
@@ -60,10 +61,10 @@ function verifyPassword() {
 function createPost(e, formPost){
   e.preventDefault();
   //query formPost values replaced by id or for element in home page
-  query = "?title" + formPost.value
-  + "&desc" + formPost.value
-  + "&imageUrl" + formPost.value
-  + "&category" + formPost.value;
+  query = "?title=" + formPost.value
+  + "&desc=" + formPost.value
+  + "&imageUrl=" + formPost.value
+  + "&category=" + formPost.value;
   fetch("api/posts" + query, {method: 'post'}).then((res) => res.json()).then((json) => {
     alert(json);
   }).catch((err) => {
@@ -76,9 +77,12 @@ function createPost(e, formPost){
 function showPost(e, getPosts){
   e.preventDefault();
   // getPost.value to be replaced by id or element in home.html
-  query = "?category" + getPosts.value;
+  query = "?category=" + getPosts.cate.value;
+  alert(query);
   fetch("api/post" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
-    alert(json);
+    alert("Form");
+    alert(JSON.stringify(json));
+    document.getElementById("cas").innerHTML = JSON.stringify(json);
   }).catch((err) => {
     alert(err);
   });
