@@ -92,8 +92,8 @@ function verifyNewAccount(e, form) {
    - Length L must satisfy 5 < L < 24 */
    function verifyUsername(username) {
     var len = username.length;
-    if( len < 6 ) {
-        alert('username must be at least 6 characters long');
+    if( len < 4 ) {
+        alert('username must be at least 4 characters long');
         return false;
     }
     else if( len > 24 ) {
