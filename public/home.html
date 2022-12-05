@@ -96,6 +96,7 @@ h1{
 
 </head>
 <body>
+  <script type="text/javascript" src="main.js"></script>
     <nav>
       <ul>
   <li><a href="Login.html">User Log in</a></li>
@@ -114,7 +115,30 @@ h1{
       <p>a few questions to personalize your page</p></article>
     <article class="one">
       <h2>Then its Time to save money </h2>
-    <p></p>
+    <p>
+    </p>
+    //shows titles of posts of category
+    <form onsubmit="getPost(event, this)" method="get" action="api/post">
+      <input type="text" id="categoryG" required>
+      <button type="submit">Category</button>
+    </form>
+    //all post titles from database will show up after selecting category
+    <div id="test">
+       
+    </div>
+    //creates new post
+    <form onsubmit="createPost(event, this)" method="post" action="api/posts">
+      <input type="text" id="title">
+      <input type="text" id="desc">
+      <input type="text" id="image">
+      <input type="text" id="category">
+      <button type="submit">Create</button>
+    </form>
+    <!-- <p id="total"> </p>
+    <p id="ti"> </p>
+    <p id="de"> </p>
+    <p id="im"></p>
+    <p id="ca"> </p> -->
   </article>
   </div>
   <br> 
