@@ -1,3 +1,5 @@
+const { json } = require("express");
+
 function run() {
   fetch("/api/members")
     .then((res) => res.json())
@@ -61,12 +63,16 @@ function verifyPassword() {
 function createPost(e, formPost){
   e.preventDefault();
   //query formPost values replaced by id or for element in home page
-  query = "?title=" + formPost.value
-  + "&desc=" + formPost.value
-  + "&imageUrl=" + formPost.value
-  + "&category=" + formPost.value;
+  query = "?title=" + formPost.title.value
+  + "&desc=" + formPost.desc.value
+  + "&imageUrl=" + formPost.image.value
+  + "&category=" + formPost.category.value;
   fetch("api/posts" + query, {method: 'post'}).then((res) => res.json()).then((json) => {
     alert(json);
+    var list = document.getElementById("test");
+    var el = document.createElement("p");
+    el.innerText = json.title;
+    list.appendChild(el);
   }).catch((err) => {
     alert(err);
   });
@@ -74,15 +80,24 @@ function createPost(e, formPost){
 
 /* Shows all posts under a selected category selected by user
 */
-function showPost(e, getPosts){
+function getPost(e, getPosts){
   e.preventDefault();
   // getPost.value to be replaced by id or element in home.html
-  query = "?category=" + getPosts.cate.value;
+  query = "?category=" + getPosts.categoryG.value;
   alert(query);
   fetch("api/post" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
     alert("Form");
-    alert(JSON.stringify(json));
-    document.getElementById("cas").innerHTML = JSON.stringify(json);
+    alert(JSON.stringify(json[0]));
+    alert(json.length);
+    var count = 0;
+    document.getElementById("test").innerHTML = "";
+    var list = document.getElementById("test");
+    while (count < json.length){
+      var el = document.createElement("p");
+      el.innerText = json[count].title;
+      list.appendChild(el);
+      count++;
+    }
   }).catch((err) => {
     alert(err);
   });
