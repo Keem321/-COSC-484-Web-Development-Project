@@ -16,9 +16,10 @@ function verifyLogin(e, form) {
   + "&pass=" + form.floatingPassword.value ;
 
   fetch("/api/login" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
+    console.log(json);
     if(json.length > 0) {
       const jsonObj = JSON.parse(JSON.stringify(json));
-      
+
       const d = new Date();
       const expirationDays = 1;
       d.setTime(d.getTime() + (expirationDays*24*60*60*1000));
@@ -63,6 +64,16 @@ function verifyNewAccount(e, form) {
         "favs": {}
       })
     }).then((res) => {
+      console.log(res);
+      // get expires time
+      const d = new Date();
+      const expirationDays = 1;
+      d.setTime(d.getTime() + (expirationDays*24*60*60*1000));
+      const expires = "expires="+ d.toUTCString();
+
+      document.cookie = "loggedin=true;" + expires + ";path=/";
+      document.cookie = "email="+ form.floatingEmail.value +";" + expires + ";path=/";
+
       window.location.href = res.url;
     }).catch((err) => {
       alert('Error')

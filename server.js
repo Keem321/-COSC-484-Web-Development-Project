@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const { MongoClient } = require("mongodb");
-const { resolve } = require("mongodb/lib/core/topologies/read_preference");
 
 const uri = process.env.MONGODB_URI;
 
@@ -30,9 +29,10 @@ app.get("/api/login", async function (req, res) {
     const collection = database.collection('accounts');
 
     const query = req.query;
+    console.log(req.query);
     const cursor = collection.find(query);
-    const result = cursor.toArray();
-
+    const result = await cursor.toArray();
+    console.log(result);
     return res.json(result);
     
   } catch(err) {
