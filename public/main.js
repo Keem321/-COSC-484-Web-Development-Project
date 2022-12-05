@@ -65,14 +65,16 @@ function createPost(e, formPost){
   //query formPost values replaced by id or for element in home page
   query = "?title=" + formPost.title.value
   + "&desc=" + formPost.desc.value
+  + "&url=" + formPost.url.value
   + "&imageUrl=" + formPost.image.value
   + "&category=" + formPost.category.value;
   fetch("api/posts" + query, {method: 'post'}).then((res) => res.json()).then((json) => {
     alert(json);
-    var list = document.getElementById("test");
-    var el = document.createElement("p");
-    el.innerText = json.title;
-    list.appendChild(el);
+    //test to show data on home
+    // var list = document.getElementById("test");
+    // var el = document.createElement("p");
+    // el.innerText = json.title;
+    // list.appendChild(el);
   }).catch((err) => {
     alert(err);
   });
@@ -86,18 +88,17 @@ function getPost(e, getPosts){
   query = "?category=" + getPosts.categoryG.value;
   alert(query);
   fetch("api/post" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
-    alert("Form");
     alert(JSON.stringify(json[0]));
-    alert(json.length);
-    var count = 0;
-    document.getElementById("test").innerHTML = "";
-    var list = document.getElementById("test");
-    while (count < json.length){
-      var el = document.createElement("p");
-      el.innerText = json[count].title;
-      list.appendChild(el);
-      count++;
-    }
+    //test to show on home
+    // var count = 0;
+    // document.getElementById("test").innerHTML = "";
+    // var list = document.getElementById("test");
+    // while (count < json.length){
+    //   var el = document.createElement("p");
+    //   el.innerText = json[count].title;
+    //   list.appendChild(el);
+    //   count++;
+    // }
   }).catch((err) => {
     alert(err);
   });

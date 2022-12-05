@@ -86,7 +86,7 @@ app.post('/api/posts', async function(req, res){
 // get post from db
 app.get("/api/post", async function (req, res) {
   const client = new MongoClient(uri, { useUnifiedTopology: true });
-  
+
   try {
     await client.connect();
 
