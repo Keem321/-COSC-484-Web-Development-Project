@@ -1,13 +1,19 @@
 // create an express app
 const express = require("express");
+const bodyParser = require('body-parser');
 const app = express();
 
 const { MongoClient } = require("mongodb");
+const { resolve } = require("mongodb/lib/core/topologies/read_preference");
 
-const uri = process.env.MONGODB_URI;
+const uri = "mongodb+srv://keem:Stormwater32@cosc484-oink.wjezri1.mongodb.net/test";
+//process.env.MONGODB_URI;
 
 // use the express-static middleware
 app.use(express.static("public"));
+
+// middlewear to parse body
+app.use(bodyParser.json());
 
 // middlewear for errors
 app.use(function(err,req,res,next){
@@ -23,12 +29,10 @@ app.get("/api/login", async function (req, res) {
 
     const database = client.db('oinkdb');
     const collection = database.collection('accounts');
-    
-    console.log();
 
     const query = req.query;
     const cursor = collection.find(query);
-    const result = await cursor.toArray();
+    const result = cursor.toArray();
 
     return res.json(result);
     
@@ -59,6 +63,7 @@ app.get("/api/accounts", async function (req, res) {
     
   } catch(err) {
     console.log(err);
+    return res.json({ "fail": "true"});
   }
   finally {
     // Ensures that the client will close when you finish/error
@@ -76,22 +81,16 @@ app.post("/api/signup", async function (req, res) {
     const database = client.db('oinkdb');
     const collection = database.collection('accounts');
 
-    // returns the id of inserted document
-    const insert = collection.insertOne({
-      "uname": "user",
-      "email": "email@towson.edu",
-      "fname": "First",
-      "lname": "Last",
-      "pass": "password",
-      "phone": "1234567890",
-      "favs": {}
-    });
+    console.log('BODY: ' + JSON.stringify(req.body));
 
-    return insert.toArray();
+    await collection.insertOne(req.body).then((info) => {
+      //redirect on success
+      return res.redirect(301, "../index.html");
+    });
     
   } catch(err) {
     console.log(err);
-    //look for specific duplicate error 
+    // way to make already have account popup?
   }
   finally {
     // Ensures that the client will close when you finish/error
