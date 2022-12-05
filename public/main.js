@@ -17,13 +17,17 @@ function verifyLogin(e, form) {
 
   fetch("/api/login" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
     console.log(json);
+    console.log(form.memory.checked);
     if(json.length > 0) {
       const jsonObj = JSON.parse(JSON.stringify(json));
 
       const d = new Date();
-      const expirationDays = 1;
+      const expirationDays = 10;
       d.setTime(d.getTime() + (expirationDays*24*60*60*1000));
-      const expires = "expires="+ d.toUTCString();
+      var expires = "expires="+ d.toUTCString();
+      if(!form.memory.checked) {
+        expires = "";
+      }
 
       document.cookie = "loggedin=true;" + expires + ";path=/";
       //document.cookie = "email=true;" + expires + ";path=/";
@@ -130,9 +134,19 @@ function getCookie(cname) {
 
 function checkLogin() {
   let loggin = getCookie("loggedin");
-  if (!loggin) {
+  if(window.location.href.substring(window.location.href.lastIndexOf('/'),) == "/login.html") {
+    if (loggin) {
+      window.location.href = 'index.html';
+    }
+  }
+  else if (!loggin) {
     window.location.href = 'login.html';
   } else {
     console.log('check login success');
   }
+}
+
+function logout() {
+  document.cookie = "loggedin=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+  window.location.href = 'login.html';
 }
