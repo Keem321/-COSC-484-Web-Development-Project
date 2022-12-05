@@ -15,11 +15,9 @@ function verifyLogin(e, form) {
   e.preventDefault();
   query = "?email=" + form.floatingInput.value 
   + "&pass=" + form.floatingPassword.value ;
-  alert(query);
-  fetch("api/accounts" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
-    alert('form submit!');
-    alert(json);
-    if(json != null) {
+
+  fetch("/api/login" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
+    if(json) {
       window.location.href = 'index.html';
       //document.cookie = "email=John Doe";
      // document.cookie = "loggedIn=true; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
@@ -27,8 +25,7 @@ function verifyLogin(e, form) {
       document.getElementById("fail").innerHTML = "Incorrect Email or Password";
     }
   }).catch((err) => {
-    alert('Error')
-    alert(err);
+    console.log(err);
     document.getElementById("fail").innerHTML = "Error";
   });
 }

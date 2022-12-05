@@ -23,6 +23,8 @@ app.get("/api/login", async function (req, res) {
 
     const database = client.db('oinkdb');
     const collection = database.collection('accounts');
+    
+    console.log();
 
     const query = req.query;
     const cursor = collection.find(query);
