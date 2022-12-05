@@ -49,8 +49,9 @@ function verifyNewAccount(e, form) {
   e.preventDefault();
   const pass = form.floatingPassword.value;
   const cpass = form.floatingConfirmPassword.value;
+  const uname = form.floatingUsername.value;
 
-  if (verifyPassword(pass, cpass)) {
+  if (verifyPassword(pass, cpass) && verifyUsername(uname)) {
     fetch("/api/signup", {
       method: 'POST',
       headers: { 
@@ -87,16 +88,12 @@ function verifyNewAccount(e, form) {
   }
 }
 
-/*function verifyNewAccount() {
-  return verifyUsername() && verifyPassword()
-}*/
-
 /* Verify Username Length
    - Length L must satisfy 5 < L < 24 */
    function verifyUsername(username) {
     var len = username.length;
-    if( len < 6 ) {
-        alert('username must be at least 6 characters long');
+    if( len < 4 ) {
+        alert('username must be at least 4 characters long');
         return false;
     }
     else if( len > 24 ) {
@@ -149,4 +146,51 @@ function checkLogin() {
 function logout() {
   document.cookie = "loggedin=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   window.location.href = 'login.html';
+}
+
+/* Create a post
+-  takes a form from home page and creates an entry in the database, returns the new post
+*/
+function createPost(e, formPost){
+  e.preventDefault();
+  //query formPost values replaced by id or for element in home page
+  query = "?title=" + formPost.title.value
+  + "&desc=" + formPost.desc.value
+  + "&url=" + formPost.url.value
+  + "&imageUrl=" + formPost.image.value
+  + "&category=" + formPost.category.value;
+  fetch("api/posts" + query, {method: 'post'}).then((res) => res.json()).then((json) => {
+    alert(json);
+    //test to show data on home
+    // var list = document.getElementById("test");
+    // var el = document.createElement("p");
+    // el.innerText = json.title;
+    // list.appendChild(el);
+  }).catch((err) => {
+    alert(err);
+  });
+}
+
+/* Shows all posts under a selected category selected by user
+*/
+function getPost(e, getPosts){
+  e.preventDefault();
+  // getPost.value to be replaced by id or element in home.html
+  query = "?category=" + getPosts.categoryG.value;
+  alert(query);
+  fetch("api/post" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
+    alert(JSON.stringify(json[0]));
+    //test to show on home
+    // var count = 0;
+    // document.getElementById("test").innerHTML = "";
+    // var list = document.getElementById("test");
+    // while (count < json.length){
+    //   var el = document.createElement("p");
+    //   el.innerText = json[count].title;
+    //   list.appendChild(el);
+    //   count++;
+    // }
+  }).catch((err) => {
+    alert(err);
+  });
 }
