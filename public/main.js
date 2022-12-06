@@ -178,13 +178,18 @@ function userInfo() {
       fname = jsonObj[i]['fname'];
       lname = jsonObj[i]['lname'];
       phone = jsonObj[i]['phone'];
+      favs = jsonObj[i]['favs'];
     }
+
     document.getElementById("info-usr").innerHTML = uname;
     document.getElementById("info-em").innerHTML = email;
     document.getElementById("info-name").innerHTML = fname + " " + lname;
     document.getElementById("info-ph").innerHTML = 
     "(" + phone.substring(0,3) + ") " + phone.substring(3,6) + "-" + phone.substring(6,10);
-    //document.getElementById("fail").innerHTML = "Incorrect Email or Password";
+    
+    document.getElementById("clothing").checked = favs.clothing;
+    document.getElementById("electronics").checked = favs.electronics;
+    document.getElementById("food").checked = favs.food;
   }));
 }
 
