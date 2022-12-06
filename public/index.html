@@ -30,8 +30,13 @@
     <h5>Browse our savings below</h5>
 
     <form onsubmit="getPost2(event, this)" method="get" action="/api/post">
-      <input type="text" id="categoryG" required>
-      <button type="submit">Category</button>
+      <label for="Category">Choose a Category</label>
+      <select name="Category" id="categoryG">
+        <option value="Food">Food</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Electronics ">Electronics </option>
+      </select>
+      <button type="submit">Select</button>
     </form>
 
 <div class = "c" id="ca">
