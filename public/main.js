@@ -264,16 +264,11 @@ function createPost(e, formPost){
   //query formPost values replaced by id or for element in home page
   query = "?title=" + formPost.title.value
   + "&desc=" + formPost.desc.value
-  + "&url=" + formPost.url.value
-  + "&imageUrl=" + formPost.image.value
+  + "&imageUrl=" + formPost.imageUrl.value
+  + "&link=" + formPost.link.value
   + "&category=" + formPost.category.value;
-  fetch("api/posts" + query, {method: 'post'}).then((res) => res.json()).then((json) => {
-    alert(json);
-    //test to show data on home
-    // var list = document.getElementById("test");
-    // var el = document.createElement("p");
-    // el.innerText = json.title;
-    // list.appendChild(el);
+  fetch("api/posts" + query, {method: 'post'}).then((res) => res.json()).then((json) => {    
+    alert("Post was created!");
   }).catch((err) => {
     alert(err);
   });
@@ -281,24 +276,69 @@ function createPost(e, formPost){
 
 /* Shows all posts under a selected category selected by user
 */
-function getPost(e, getPosts){
+function getPost(e, formPost){
   e.preventDefault();
-  // getPost.value to be replaced by id or element in home.html
-  query = "?category=" + getPosts.categoryG.value;
-  alert(query);
+  document.getElementById('ca').innerHTML = "";
+  // alert(JSON.stringify(x));
+
+  query = "?category=" + formPost.categoryG.value;
   fetch("api/post" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
-    alert(JSON.stringify(json[0]));
-    //test to show on home
-    // var count = 0;
-    // document.getElementById("test").innerHTML = "";
-    // var list = document.getElementById("test");
-    // while (count < json.length){
-    //   var el = document.createElement("p");
-    //   el.innerText = json[count].title;
-    //   list.appendChild(el);
-    //   count++;
-    // }
+    if(json.length == 0){
+      alert("No entries found");
+    }
+    postAdd(json);
   }).catch((err) => {
     alert(err);
   });
 }
+
+function postAdd(jPost){
+  for(let i = 0; i < jPost.length; i++){
+    var div = document.createElement('div');
+    div.setAttribute('class', 'card');
+    div.innerHTML = `
+    <h4 class="card-title">${jPost[i].title}</h4>
+    <h6 class="card-subtitle mb-2 text-muted">${jPost[i].desc}</h6>
+     <img src="${jPost[i].imageUrl}" alt= "Image">
+     <a href="${jPost[i].link}" class="btn btn-primary">Click Here</a>`;
+     document.getElementById('ca').appendChild(div);
+  }
+}
+
+function getFavorites(){
+  const query = "?email=" +getCookie("email");
+  var uname, email, fname, lname, phone;
+  fetch("/api/getAccount" + query, {method: 'GET'})
+  .then((res) => res.json().then((json) => {
+    const jsonObj = JSON.parse(JSON.stringify(json));
+
+    //loop through response and get the email
+    for (var i = 0; i < jsonObj.length; i++) {
+      uname = jsonObj[i]['uname'];
+      email = jsonObj[i]['email'];
+      fname = jsonObj[i]['fname'];
+      lname = jsonObj[i]['lname'];
+      phone = jsonObj[i]['phone'];
+      favs = jsonObj[i]['favs'];
+    }
+    var favor = document.getElementById("categoryG");
+    if(favs.clothing == true){
+      var fOption = document.createElement('option');
+      fOption.value = "Clothing";
+      fOption.innerHTML = "Clothing";
+      favor.appendChild(fOption);
+    }
+    if(favs.food == true){
+      var fOption = document.createElement('option');
+      fOption.value = "Food";
+      fOption.innerHTML = "Food";
+      favor.appendChild(fOption);
+    }
+    if(favs.electronics == true){
+      var fOption = document.createElement('option');
+      fOption.value = "Electronics";
+      fOption.innerHTML = "Electronics";
+      favor.appendChild(fOption);
+    }
+}
+  ))}

@@ -60,9 +60,10 @@ box-sizing:border-box;
 
 }
 body {
-	width: 60%;
-	margin-left: 20%;
-	text-align: justify;
+	font-family: 'Barlow' ;
+	width: 50%;
+	margin-left: 25%;
+	text-align: left;
 	line-height: 1.7;
 	font-size: 18px;
 	background-color:black;
@@ -127,4 +128,8 @@ p a[href] {
 a
 {
 	color: #000;
+}
+
+.card .card-title{
+	color:#000;
 }
