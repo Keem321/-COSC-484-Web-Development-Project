@@ -86,7 +86,14 @@ app.post("/api/signup", async function (req, res) {
       //redirect on success
       return res.redirect(301, "../index.html");
     });
-    
+  } catch(err) {
+    console.log(err);
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+});
+
 // send posts to db
 app.post('/api/posts', async function(req, res){
   const client = new MongoClient(uri, { useUnifiedTopology: true });
@@ -137,21 +144,24 @@ app.get("/api/post", async function (req, res) {
   }
 });
 
-app.post("/addname", (req, res) => {
-  var myData = new User(req.body);
-  myData.save()
-  .then(item => {
-  res.send("item saved to database");
-  })
-  .catch(err => {
-  res.status(400).send("unable to save to database");
-  });
- });
+app.post("/api/updateAccount", async function (req, res) {
+  const client = new MongoClient(uri, { useUnifiedTopology: true });
+  
+  try {
+    await client.connect();
 
+    const database = client.db('oinkdb');
+    const collection = database.collection('accounts');
+
+    console.log('BODY: ' + JSON.stringify(req.body));
+
+    await collection.updateOne(req.body).then((info) => {
+      console.log();
+      return ;
+    });
   } catch(err) {
     console.log(err);
-  }
-  finally {
+  } finally {
     // Ensures that the client will close when you finish/error
     await client.close();
   }

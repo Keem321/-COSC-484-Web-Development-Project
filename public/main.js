@@ -1,4 +1,4 @@
-function run() {
+/*function run() {
   fetch("/api/members")
     .then((res) => res.json())
     .then((json) => {
@@ -8,7 +8,7 @@ function run() {
         tableSection.getElementsByTagName("p")[0].innerText += user.name + '\n';
       });
     });
-}
+}*/
 
 function verifyLogin(e, form) {
   e.preventDefault();
@@ -45,14 +45,59 @@ function verifyLogin(e, form) {
   });
 }
 
-function verifyNewAccount(e, form) {
-  e.preventDefault();
+function verifyNewAccount(form) {
   const pass = form.floatingPassword.value;
   const cpass = form.floatingConfirmPassword.value;
   const uname = form.floatingUsername.value;
 
-  if (verifyPassword(pass, cpass) && verifyUsername(uname)) {
+  return verifyPassword(pass, cpass) && verifyUsername(uname);
+}
+
+function createNewAccount(e, form) {
+  e.preventDefault();
+
+  if(verifyNewAccount(form)) {
     fetch("/api/signup", {
+      method: 'POST',
+      headers: { 
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      body: JSON.stringify({
+        "uname": form.floatingUsername.value,
+        "email": form.floatingEmail.value,
+        "fname": form.floatingFirstName.value,
+        "lname": form.floatingLastName.value,
+        "pass": form.floatingPassword.value,
+        "phone": form.floatingTelephone.value,
+        "favs": {}
+      })
+    }).then((res) => {
+      console.log(res);
+      // get expires time
+      const d = new Date();
+      const expirationDays = 1;
+      d.setTime(d.getTime() + (expirationDays*24*60*60*1000));
+      const expires = "expires="+ d.toUTCString();
+
+      document.cookie = "loggedin=true;" + expires + ";path=/";
+      document.cookie = "email="+ form.floatingEmail.value +";" + expires + ";path=/";
+
+      window.location.href = res.url;
+    }).catch((err) => {
+      alert('Error')
+      alert(err);
+      document.getElementById("fail").innerHTML = "Error";
+    });
+  }
+}
+
+function updateAccount(e, form) {
+  e.preventDefault();
+  if(verifyNewAccount(form)) {
+
+    fetch("/api/updateAccount", {
       method: 'POST',
       headers: { 
         'Accept': 'application/json',
@@ -113,6 +158,7 @@ function verifyPassword(password, confirmPassword) {
     return true;
 }
 
+// get specfic named cookie
 function getCookie(cname) {
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
@@ -129,6 +175,7 @@ function getCookie(cname) {
   return "";
 }
 
+// login check on pages, kicks back out if not. Or on login kicks back in.
 function checkLogin() {
   let loggin = getCookie("loggedin");
   if(window.location.href.substring(window.location.href.lastIndexOf('/'),) == "/login.html") {
@@ -143,6 +190,7 @@ function checkLogin() {
   }
 }
 
+// on logout, delete the cookies allowing site acces
 function logout() {
   document.cookie = "loggedin=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   window.location.href = 'login.html';

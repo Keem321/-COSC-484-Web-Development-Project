@@ -1,5 +1,4 @@
 h1 {
-	font-family: 'Barlow' ;
 	color:antiquewhite;
 	
 }
@@ -13,23 +12,8 @@ span
 	color: antiquewhite;
 }
 
-/*ul {
-list-style: none outside none;
-margin:0;
-padding: 0;
-text-align: center;
-background-color:rgba(147, 11, 11, 0.5);
-}
 
-li
-{
-float: left;
-margin: 0 10px;
-display:inline;
-}
-*/
 ul {
-	font-family: 'Trebuchet MS', sans-serif;
 	list-style-type: none outside none;
 	margin: 0;
 	padding: 0;
@@ -39,7 +23,6 @@ ul {
 	li a {
 	  color: #000;
 	  display: inline;
-	  font-family: 'Trebuchet MS', sans-serif;
 	  padding:16px;
 	  text-decoration: none; 
 	}
@@ -77,9 +60,8 @@ box-sizing:border-box;
 
 }
 body {
-	font-family: 'Barlow' ;
-	width: 50%;
-	margin-left: 25%;
+	width: 60%;
+	margin-left: 20%;
 	text-align: justify;
 	line-height: 1.7;
 	font-size: 18px;
@@ -90,14 +72,6 @@ body {
 	margin-right: 1%;
 	margin-top: 3px;
 	width: 90px;
-}
-
-
-button {
-	font-size: 18px;
-	font-weight: 600;
-	color: #000;
-	font-family: 'Barlow' ;
 }
 
 #laugh {
