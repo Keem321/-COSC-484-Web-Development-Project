@@ -18,8 +18,8 @@ app.use(function(err,req,res,next){
   res.status(422).send({error: err.message});
 });
 
-// login
-app.get("/api/login", async function (req, res) {
+// fetch account info
+app.get("/api/getAccount", async function (req, res) {
   const client = new MongoClient(uri, { useUnifiedTopology: true });
   console.log(req);
   try {
@@ -37,32 +37,6 @@ app.get("/api/login", async function (req, res) {
     
   } catch(err) {
     console.log(err);
-  }
-  finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-});
-
-// query the accounts db
-app.get("/api/accounts", async function (req, res) {
-  const client = new MongoClient(uri, { useUnifiedTopology: true });
-  
-  try {
-    await client.connect();
-
-    const database = client.db('oinkdb');
-    const collection = database.collection('accounts');
-
-    const query = req.query;
-    const cursor = collection.find(query);
-    const result = await cursor.toArray();
-
-    return res.json(result);
-    
-  } catch(err) {
-    console.log(err);
-    return res.json({ "fail": "true"});
   }
   finally {
     // Ensures that the client will close when you finish/error
@@ -144,7 +118,7 @@ app.get("/api/post", async function (req, res) {
   }
 });
 
-app.post("/api/updateAccount", async function (req, res) {
+app.post("/api/updateInterests", async function (req, res) {
   const client = new MongoClient(uri, { useUnifiedTopology: true });
   
   try {
@@ -152,13 +126,62 @@ app.post("/api/updateAccount", async function (req, res) {
 
     const database = client.db('oinkdb');
     const collection = database.collection('accounts');
+    const jsonBody = JSON.stringify(req.body);
+    var email, favs;
+    console.log('updateAccount recieved:\n' + jsonBody);
 
-    console.log('BODY: ' + JSON.stringify(req.body));
+    const jsonObj = JSON.parse(jsonBody);
 
-    await collection.updateOne(req.body).then((info) => {
-      console.log();
-      return ;
-    });
+    //loop through response and get the email
+    for (var i = 0; i < jsonBody.length; i++) {
+      email = jsonObj.email;
+      favs = jsonObj.favs;
+    }
+    const result = await collection.updateOne(
+      {"email" : email},
+      {$set: { "favs": favs } }
+    )
+    
+    return res.json(result.modifiedCount);
+
+  } catch(err) {
+    console.log(err);
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+});
+
+app.post("/api/updateSettings", async function (req, res) {
+  const client = new MongoClient(uri, { useUnifiedTopology: true });
+  
+  try {
+    await client.connect();
+
+    const database = client.db('oinkdb');
+    const collection = database.collection('accounts');
+    const jsonBody = JSON.stringify(req.body);
+    var uname, email, fname, lname, pass, phone;
+    console.log('updateAccount recieved:\n' + jsonBody);
+
+    const jsonObj = JSON.parse(jsonBody);
+
+    //loop through response and get the email
+    for (var i = 0; i < jsonBody.length; i++) {
+      uname = jsonObj.uname;
+      email = jsonObj.email;
+      fname = jsonObj.fname;
+      lname = jsonObj.lname;
+      pass = jsonObj.pass;
+      phone = jsonObj.phone;
+    }
+    const result = await collection.updateOne(
+      {"email" : email},
+      {$set: { "uname": uname, "fname": fname, "lname": lname, "pass": pass, "phone": phone } }
+    )
+    
+    return res.json(result.modifiedCount);
+
   } catch(err) {
     console.log(err);
   } finally {

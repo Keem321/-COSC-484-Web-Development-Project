@@ -34,8 +34,8 @@
 
         <div class="col-sm-6">    
 
-          <h2>Update Settings</h2>  
-          <form class="form-settings" onsubmit="updateSettings(event, this)" method="post" action="api/accounts">
+          <h2>Update Settings</h2>
+          <form id="settings" class="form-settings" onsubmit="updateSettings(event, this)" method="post" action="api/accounts">
             
             <fieldset name="verify">
               <div class="form-floating mb-1">
@@ -48,17 +48,17 @@
                 <label for="floatingConfirmPassword">confirm password</label>
               </div>
             </fieldset>
-
+            <h6>new values</h6>
             <fieldset name="update">
-              <div class="form-floating mb-1">
-                <input type="pass" class="form-control" id="floatingNewPassword" placeholder="Password" required>
-                <label for="floatingNewPassword">new password</label>
-              </div>
+                <div class="form-floating mb-1">
+                  <input type="text" class="form-control" id="floatingUsername" placeholder="username" required>
+                  <label for="floatingUsername">username</label>
+                </div>
 
-              <div class="form-floating mb-1">
-                <input type="text" class="form-control" id="floatingUsername" placeholder="username" required>
-                <label for="floatingUsername">username</label>
-              </div>
+                <div class="form-floating mb-1">
+                  <input type="pass" class="form-control" id="floatingNewPassword" placeholder="Password" required>
+                  <label for="floatingNewPassword">password</label>
+                </div>
 
               <div class="form-floating mb-1">
                 <input type="text" class="form-control" id="floatingFirstName" placeholder="name" required>
@@ -70,36 +70,33 @@
                 <label for="floatingLastName">last name</label>
               </div>
           
-              <div class="form-floating mb-1">
-                <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com" required>
-                <label for="floatingEmail">name@example.com</label>
-              </div>
-          
               <div class="form-floating">
                 <input type="tel" class="form-control" id="floatingTelephone" placeholder="phone" required>
                 <label for="floatingTelephone">phone</label>
               </div>
             </fieldset>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
           </form>
         </div>
         
         <div class="col-sm-6">
           
           <h2>Update Interests</h2>
-          <form onsubmit="updateSettings(event, this)" method="post" action="api/accounts">
+          <form id="interests" onsubmit="updateInterests(event, this)" method="post" action="api/accounts">
             
-            <fieldset name="Interests">
+            <fieldset id="Interests" name="Interests">
               <ul class="list-group">
                 <li class="list-group-item">
-                  <input id="clothing" class="form-check-input me-1" type="checkbox" value="">
+                  <input type="hidden" id="clothing" value="no">
+                  <input id="clothing" class="form-check-input me-1" type="checkbox">
                   Clothing
                 </li>
                 <li class="list-group-item">
-                  <input id="electronics" class="form-check-input me-1" type="checkbox" value="">
+                  <input id="electronics" class="form-check-input me-1" type="checkbox">
                   Electronics
                 </li>
                 <li class="list-group-item">
-                  <input id="food" class="form-check-input me-1" type="checkbox" value="">
+                  <input id="food" class="form-check-input me-1" type="checkbox">
                   Food
                 </li>
               </ul>

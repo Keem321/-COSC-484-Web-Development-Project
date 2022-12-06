@@ -15,7 +15,7 @@ function verifyLogin(e, form) {
   query = "?email=" + form.floatingInput.value 
   + "&pass=" + form.floatingPassword.value ;
 
-  fetch("/api/login" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
+  fetch("/api/getAccount" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
     console.log(json);
     console.log(form.memory.checked);
     if(json.length > 0) {
@@ -93,44 +93,75 @@ function createNewAccount(e, form) {
   }
 }
 
-function updateAccount(e, form) {
+function updateSettings(e, form) {
   e.preventDefault();
-  if(verifyNewAccount(form)) {
+  const username = form.floatingUsername.value;
+  const currentPassword = form.floatingPassword.value;
+  const confirmPassword = form.floatingConfirmPassword.value;
+  var dbPassword;
+  //get the user password from database
+  fetch("/api/getAccount?email=" + getCookie("email"), {method: 'get'}).then((res) => res.json()).then((json) => {
+    const jsonObj = JSON.parse(JSON.stringify(json));
+    //loop through response and get the password
+    for (var i = 0; i < jsonObj.length; i++) {
+      dbPassword = jsonObj[i]['pass'];
+    }
+    console.log(verifyUsername(username));
+    console.log(verifyPassword(currentPassword, confirmPassword));
+    console.log(verifyPassword(currentPassword, dbPassword));
 
-    fetch("/api/updateAccount", {
-      method: 'POST',
-      headers: { 
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      redirect: 'follow',
-      body: JSON.stringify({
-        "uname": form.floatingUsername.value,
-        "email": form.floatingEmail.value,
-        "fname": form.floatingFirstName.value,
-        "lname": form.floatingLastName.value,
-        "pass": form.floatingPassword.value,
-        "phone": form.floatingTelephone.value,
-        "favs": {}
-      })
-    }).then((res) => {
-      console.log(res);
-      // get expires time
-      const d = new Date();
-      const expirationDays = 1;
-      d.setTime(d.getTime() + (expirationDays*24*60*60*1000));
-      const expires = "expires="+ d.toUTCString();
+    return (verifyUsername(username) && verifyPassword(currentPassword, confirmPassword) && verifyPassword(currentPassword, dbPassword));
+  }).then((verified) => {
+    console.log("verified:" + verified);
+    if(verified) {
+      fetch("/api/updateSettings", {
+        method: 'POST',
+        headers: { 
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "uname": form.floatingUsername.value,
+          "email": getCookie("email"),
+          "fname": form.floatingFirstName.value,
+          "lname": form.floatingLastName.value,
+          "pass": form.floatingNewPassword.value,
+          "phone": form.floatingTelephone.value
+        })
+      }).then((res) => {
+        console.log("fetch updateAccount modified: " + res);
+      });
+    }
+  });
+}
 
-      document.cookie = "loggedin=true;" + expires + ";path=/";
-      document.cookie = "email="+ form.floatingEmail.value +";" + expires + ";path=/";
+function updateInterests(e, form) {
+  e.preventDefault();
 
-      window.location.href = res.url;
-    }).catch((err) => {
-      alert('Error')
-      alert(err);
-      document.getElementById("fail").innerHTML = "Error";
-    });
-  }
+  const clothing = document.querySelector('#clothing:checked');
+  const electronics = document.querySelector('#electronics:checked');
+  const food = document.querySelector('#food:checked');
+  console.log('clothing: ' + !(clothing == null));
+  console.log('electronics: ' + !(electronics == null));
+  console.log('food: ' + !(food == null));
+
+  fetch("/api/updateInterests", {
+    method: 'POST',
+    headers: { 
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "email": getCookie("email"),
+      "favs": {
+        "clothing": !(clothing == null),
+        "electronics": !(electronics == null),
+        "food": !(food == null)
+      }
+    })
+  }).then((res) => {
+    console.log("fetch updateAccount modified: " + res);
+  });
 }
 
 /* Verify Username Length
@@ -152,7 +183,7 @@ function updateAccount(e, form) {
    - Password and Confirm Password Inputs must match */
 function verifyPassword(password, confirmPassword) {
     if(password != confirmPassword) {
-        alert('ensure passwords match');
+        alert("passwords don't match");
         return false;
     }
     return true;
