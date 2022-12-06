@@ -10,10 +10,6 @@
     });
 }*/
 
-{
-  var x = {}
-}
-
 function verifyLogin(e, form) {
   e.preventDefault();
   query = "?email=" + form.floatingInput.value 
@@ -268,16 +264,11 @@ function createPost(e, formPost){
   //query formPost values replaced by id or for element in home page
   query = "?title=" + formPost.title.value
   + "&desc=" + formPost.desc.value
-  + "&imageUrl=" + formPost.image.value
-  + "&url=" + formPost.url.value
+  + "&imageUrl=" + formPost.imageUrl.value
+  + "&link=" + formPost.link.value
   + "&category=" + formPost.category.value;
-  fetch("api/posts" + query, {method: 'post'}).then((res) => res.json()).then((json) => {
-    alert(json);
-    //test to show data on home
-    // var list = document.getElementById("test");
-    // var el = document.createElement("p");
-    // el.innerText = json.title;
-    // list.appendChild(el);
+  fetch("api/posts" + query, {method: 'post'}).then((res) => res.json()).then((json) => {    
+    alert("Post was created!");
   }).catch((err) => {
     alert(err);
   });
@@ -300,20 +291,6 @@ function getPost(e, formPost){
     alert(err);
   });
 }
-
-// function getPost(){
-//   document.getElementById('ca').innerHTML = "";
-//   query = "?category=" + l[i];
-//   alert(query);
-//   fetch("api/post" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
-//     if(json.length == 0){
-//       alert("No entries found");
-//     }
-//     postAdd(json);
-//   }).catch((err) => {
-//     alert(err);
-//   });
-// }
 
 function postAdd(jPost){
   for(let i = 0; i < jPost.length; i++){
@@ -363,7 +340,5 @@ function getFavorites(){
       fOption.innerHTML = "Electronics";
       favor.appendChild(fOption);
     }
-  
-    x = favs;
 }
   ))}
