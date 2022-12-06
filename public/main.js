@@ -164,6 +164,30 @@ function updateInterests(e, form) {
   });
 }
 
+function userInfo() {
+  const query = "?email=" +getCookie("email");
+  var uname, email, fname, lname, phone;
+  fetch("/api/getAccount" + query, {method: 'GET'})
+  .then((res) => res.json().then((json) => {
+    const jsonObj = JSON.parse(JSON.stringify(json));
+
+    //loop through response and get the email
+    for (var i = 0; i < jsonObj.length; i++) {
+      uname = jsonObj[i]['uname'];
+      email = jsonObj[i]['email'];
+      fname = jsonObj[i]['fname'];
+      lname = jsonObj[i]['lname'];
+      phone = jsonObj[i]['phone'];
+    }
+    document.getElementById("info-usr").innerHTML = uname;
+    document.getElementById("info-em").innerHTML = email;
+    document.getElementById("info-name").innerHTML = fname + " " + lname;
+    document.getElementById("info-ph").innerHTML = 
+    "(" + phone.substring(0,3) + ") " + phone.substring(3,6) + "-" + phone.substring(6,10);
+    //document.getElementById("fail").innerHTML = "Incorrect Email or Password";
+  }));
+}
+
 /* Verify Username Length
    - Length L must satisfy 5 < L < 24 */
    function verifyUsername(username) {

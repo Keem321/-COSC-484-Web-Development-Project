@@ -21,7 +21,6 @@ app.use(function(err,req,res,next){
 // fetch account info
 app.get("/api/getAccount", async function (req, res) {
   const client = new MongoClient(uri, { useUnifiedTopology: true });
-  console.log(req);
   try {
     await client.connect();
 
@@ -29,7 +28,6 @@ app.get("/api/getAccount", async function (req, res) {
     const collection = database.collection('accounts');
 
     const query = req.query;
-    console.log(req.query);
     const cursor = collection.find(query);
     const result = await cursor.toArray();
     console.log(result);

@@ -15,11 +15,10 @@
 
   <body class="d-flex h-100 text-center text-bg-dark">
     <script type="text/javascript" src="main.js"></script>
-    <script>checkLogin()</script>
+    <script>checkLogin(); userInfo()</script>
  
     <div class="container">
       <div class="row">
-
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
           <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
             <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
@@ -31,7 +30,19 @@
             <li class="nav-item"><a href="profile.html" class="nav-link active">Profile</a></li>
           </ul>
         </header>
+      </div>
 
+      <div class="row">
+        <div class="text-bg-dark">
+          <div class="text-center">
+            <h3 id="info-name" class="my-2"></h3>
+            <p id="info-usr"class="text-muted mb-1"></p>
+            <p id="info-em"class="text-muted mb-1"></p>
+            <p id="info-ph" class="text-muted mb-4"></p>
+        </div>
+      </div>
+      <hr/>
+      <div class="row">
         <div class="col-sm-6">    
 
           <h2>Update Settings</h2>
@@ -48,7 +59,7 @@
                 <label for="floatingConfirmPassword">confirm password</label>
               </div>
             </fieldset>
-            <h6>new values</h6>
+            <h3>new values</h3>
             <fieldset name="update">
                 <div class="form-floating mb-1">
                   <input type="text" class="form-control" id="floatingUsername" placeholder="username" required>
