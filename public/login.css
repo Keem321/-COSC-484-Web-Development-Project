@@ -10,6 +10,11 @@ body {
   padding-bottom: 40px;
 }
 
+button[name="logout"] {
+  max-width: 300px;
+  align-self: center;
+}
+
 .form-signin {
   max-width: 330px;
   padding: 15px;
@@ -29,6 +34,10 @@ body {
   color: black;
 }
 
+.form-settings label:not(.box) {
+  color: black;
+}
+
 .form-signin input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
@@ -37,4 +46,12 @@ body {
 
 #fail {
   color : red;
+}
+
+fieldset { 
+  padding-bottom: 5%;
+}
+
+.interest-box {
+  font-size: large;
 }

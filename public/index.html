@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
   </head>
 
-  <body class="text-bg-dark" onload="getPost()">
+  <body class="text-bg-dark" onload="getFavorites()">
     <script type="text/javascript" src="main.js"></script>
     <script>checkLogin()</script>
     
@@ -22,19 +22,16 @@
 
       <ul class="nav nav-pills">
         <li class="nav-item"><a href="index.html" class="nav-link active" aria-current="page">Home</a></li>
-        <li class="nav-item"><a href="settingsAndProfile.html" class="nav-link">Profile</a></li>
+        <li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li>
       </ul>
     </header>
 
     <h1>🐷💰 Welcome to Oink</h1>
     <h5>Browse our savings below</h5>
 
-    <form onsubmit="getPost2(event, this)" method="get" action="/api/post">
+    <form onsubmit="getPost(event, this)" method="get" action="/api/post">
       <label for="Category">Choose a Category</label>
       <select name="Category" id="categoryG">
-        <option value="Food">Food</option>
-        <option value="Clothing">Clothing</option>
-        <option value="Electronics ">Electronics </option>
       </select>
       <button type="submit">Select</button>
     </form>
