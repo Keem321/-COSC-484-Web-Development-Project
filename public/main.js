@@ -1,3 +1,9 @@
+const { response } = require("express");
+
+{
+  let categoryList = {};
+}
+
 function run() {
   fetch("/api/members")
     .then((res) => res.json())
@@ -156,8 +162,8 @@ function createPost(e, formPost){
   //query formPost values replaced by id or for element in home page
   query = "?title=" + formPost.title.value
   + "&desc=" + formPost.desc.value
-  + "&url=" + formPost.url.value
   + "&imageUrl=" + formPost.image.value
+  + "&url=" + formPost.url.value
   + "&category=" + formPost.category.value;
   fetch("api/posts" + query, {method: 'post'}).then((res) => res.json()).then((json) => {
     alert(json);
@@ -173,24 +179,43 @@ function createPost(e, formPost){
 
 /* Shows all posts under a selected category selected by user
 */
-function getPost(e, getPosts){
+function getPost2(e, formPost){
   e.preventDefault();
-  // getPost.value to be replaced by id or element in home.html
-  query = "?category=" + getPosts.categoryG.value;
-  alert(query);
+  query = "?category=" + formPost.categoryG.value;
   fetch("api/post" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
-    alert(JSON.stringify(json[0]));
-    //test to show on home
-    // var count = 0;
-    // document.getElementById("test").innerHTML = "";
-    // var list = document.getElementById("test");
-    // while (count < json.length){
-    //   var el = document.createElement("p");
-    //   el.innerText = json[count].title;
-    //   list.appendChild(el);
-    //   count++;
-    // }
+    if(json.length == 0){
+      alert("No entries found");
+    }
+    postAdd(json);
   }).catch((err) => {
     alert(err);
   });
+}
+
+function getPost(){
+  query = "?category=" + "Food";
+  fetch("api/post" + query, {method: 'get'}).then((res) => res.json()).then((json) => {
+    if(json.length == 0){
+      alert("No entries found");
+    }
+    postAdd(json);
+    
+  }).catch((err) => {
+
+    alert(err);
+  });
+}
+
+function postAdd(jPost){
+  document.getElementById('ca').innerHTML = "";
+  for(let i = 0; i < jPost.length; i++){
+    var div = document.createElement('div');
+    div.setAttribute('class', 'card');
+    div.innerHTML = `
+    <h4 class="card-title">${jPost[i].title}</h4>
+    <h6 class="card-subtitle mb-2 text-muted">${jPost[i].desc}</h6>
+     <img src="${jPost[i].imageUrl}" alt= "Image">
+     <a href="${jPost[i].link}" class="btn btn-primary">Click Here</a>`;
+     document.getElementById('ca').appendChild(div);
+  }
 }
