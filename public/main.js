@@ -130,6 +130,7 @@ function updateSettings(e, form) {
         })
       }).then((res) => {
         console.log("fetch updateAccount modified: " + res);
+        window.location.href = 'profile.html';
       });
     }
   });
@@ -161,6 +162,7 @@ function updateInterests(e, form) {
     })
   }).then((res) => {
     console.log("fetch updateAccount modified: " + res);
+    window.location.href = 'profile.html';
   });
 }
 
